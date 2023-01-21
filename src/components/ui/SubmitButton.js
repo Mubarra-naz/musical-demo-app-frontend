@@ -4,7 +4,7 @@ const SubmitButton = (props) => {
     <Button
       fullWidth
       variant="contained"
-      color="secondary"
+      color="primary"
       margin="normal"
       type="submit"
       disabled={props.disabled}

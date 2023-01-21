@@ -1,15 +1,13 @@
-import { Button, Link as UiLink, Typography } from "@mui/material";
+import { Link as UiLink, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import React, { Fragment, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { uiActions } from "../../store/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
 import InputField from "../ui/InputField";
 import SubmitButton from "../ui/SubmitButton";
-import AppSetting from "../../config";
-import axios from "axios";
-import { authActions } from "../../store/authSlice";
+import GoogleLogin from "./GoogleLogin";
+import { login } from "../../store/actions/authActions";
 
 const validationSchema = yup.object({
   email: yup
@@ -21,9 +19,16 @@ const validationSchema = yup.object({
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
+
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -31,48 +36,11 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       setIsLoading(true);
-      try {
-        const response = await axios.post(
-          `${AppSetting.API_URL}/users/sign_in`,
-          JSON.stringify({
-            user: values,
-          }),
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        dispatch(authActions.setCredentials(response.data));
-        navigate("/");
-        dispatch(
-          uiActions.showNotification({
-            status: "success",
-            title: "Success",
-            message: "Logged in successfully",
-          })
-        );
-      } catch (error) {
-        let msg;
-        if (!error?.response) {
-          msg = "No server response";
-        } else if (error.response?.status === 401) {
-          msg = "Invalid Email or Password";
-        } else {
-          msg = "Login Failed";
-        }
-        dispatch(
-          uiActions.showNotification({
-            status: "error",
-            title: "Error",
-            message: msg,
-          })
-        );
-      }
+      dispatch(login({ user: values }));
       setIsLoading(false);
     },
     validationSchema: validationSchema,
   });
-
-  useEffect(() => {});
 
   return (
     <Fragment>
@@ -116,7 +84,7 @@ const Login = () => {
         />
         <SubmitButton text="Login" disabled={isLoading} />
       </form>
-      <Button>Continue With Google</Button>
+      <GoogleLogin />
     </Fragment>
   );
 };

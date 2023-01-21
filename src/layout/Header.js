@@ -5,11 +5,8 @@ import AppBar from "../components/ui/AppBar";
 import Toolbar from "../components/ui/Toolbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authActions } from "../store/authSlice";
-import { uiActions } from "../store/uiSlice";
 import { AccountCircle } from "@mui/icons-material";
-import AppSetting from "../config";
-import axios from "axios";
+import { logout } from "../store/actions/authActions";
 
 const rightLink = {
   fontSize: 16,
@@ -35,51 +32,17 @@ const Header = () => {
   const profileHandler = () => {
     setAnchorEl(null);
   };
+
   const logoutHandler = async () => {
     setAnchorEl(null);
-    try {
-      const response = await axios.delete(
-        `${AppSetting.API_URL}/users/sign_out`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      dispatch(authActions.logout());
-      navigate("/", { replace: true });
-      dispatch(
-        uiActions.showNotification({
-          status: "success",
-          title: "Success",
-          message: response.data.message,
-        })
-      );
-    } catch (error) {
-      let msg;
-      if (!error?.response) {
-        msg = "No server response";
-      } else if (error.response?.status === 401) {
-        msg = error.response.data.error;
-      } else {
-        msg = "Logout Failed";
-      }
-      dispatch(
-        uiActions.showNotification({
-          status: "error",
-          title: "Error",
-          message: msg,
-        })
-      );
-    }
+    dispatch(logout(token))
+      .unwrap()
+      .then(() => navigate("/", { replace: true }));
   };
-
-  useEffect(() => {}, [dispatch]);
 
   return (
     <div>
-      <AppBar position="fixed" color="secondary">
+      <AppBar position="fixed" color="primary">
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Link
             variant="h6"

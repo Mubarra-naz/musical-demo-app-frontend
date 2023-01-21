@@ -1,14 +1,13 @@
-import { Button, Link as UiLink, Typography } from "@mui/material";
+import { Link as UiLink, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { uiActions } from "../../store/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
 import InputField from "../ui/InputField";
 import SubmitButton from "../ui/SubmitButton";
-import AppSetting from "../../config";
-import axios from "axios";
+import GoogleLogin from "./GoogleLogin";
+import { register } from "../../store/actions/authActions";
 
 const validationSchema = yup.object({
   firstName: yup
@@ -41,6 +40,15 @@ const validationSchema = yup.object({
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isSignedUp = useSelector((state) => state.auth.isSignedUp);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isSignedUp) {
+      navigate("/login");
+    }
+  }, [isSignedUp]);
+
   const signupFormik = useFormik({
     initialValues: {
       firstName: "",
@@ -49,48 +57,10 @@ const Signup = () => {
       password: "",
       confirmPassword: "",
     },
-    onSubmit: async (values) => {
-      try {
-        const response = await axios.post(
-          `${AppSetting.API_URL}/users`,
-          JSON.stringify({
-            user: {
-              first_name: values.firstName,
-              last_name: values.lastName,
-              email: values.email,
-              password: values.password,
-              confirm_password: values.confirmPassword,
-            },
-          }),
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        navigate("/login");
-        dispatch(
-          uiActions.showNotification({
-            status: "success",
-            title: "Success",
-            message: "Signed up successfully",
-          })
-        );
-      } catch (error) {
-        let msg;
-        if (!error.response) {
-          msg = "No server response";
-        } else if (error.response.status === 422) {
-          msg = error.response.data.error;
-        } else {
-          msg = "Registration Failed";
-        }
-        dispatch(
-          uiActions.showNotification({
-            status: "error",
-            title: "Error",
-            message: msg,
-          })
-        );
-      }
+    onSubmit: (values) => {
+      setIsLoading(true);
+      dispatch(register(values));
+      setIsLoading(false);
     },
     validationSchema: validationSchema,
   });
@@ -163,9 +133,9 @@ const Signup = () => {
           touched={signupFormik.touched.confirmPassword}
           error={signupFormik.errors.confirmPassword}
         />
-        <SubmitButton text="Sign Up" />
+        <SubmitButton text="Sign Up" disabled={isLoading} />
       </form>
-      <Button>Continue With Google</Button>
+      <GoogleLogin />
     </Fragment>
   );
 };

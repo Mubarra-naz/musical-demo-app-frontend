@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../store/authSlice";
 import Notification from "./Notification";
 import Header from "./Header";
+import { gapi } from "gapi-script";
+import AppSetting from "../config";
 
 let isInitial = true;
 
 const Main = (props) => {
-  const dispatch = useDispatch();
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
