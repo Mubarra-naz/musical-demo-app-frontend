@@ -18,9 +18,10 @@ const TracksList = ({ items }) => {
     <Table sx={{ width: "100%" }}>
       <TableHead>
         <TableRow>
-          <TableCell sx={{ width: "30%" }}>
+          <TableCell sx={{ width: "20%" }}>
             <Typography color="primary">Title/Artist</Typography>
           </TableCell>
+          <TableCell sx={{ width: "10%" }}></TableCell>
           <TableCell sx={{ width: "40%" }}></TableCell>
           <TableCell sx={{ width: "10%" }}>
             <Typography color="primary">Duration</Typography>
@@ -30,8 +31,8 @@ const TracksList = ({ items }) => {
       </TableHead>
       <TableBody>
         {items.map((track) => (
-          <TableRow key={track.id}>
-            <Track track={track} />
+          <TableRow key={track.attributes.id}>
+            <Track track={track.attributes} />
           </TableRow>
         ))}
       </TableBody>

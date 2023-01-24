@@ -4,6 +4,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import React from "react";
 import FlexBox from "../../ui/FlexBox";
+import AudioWave from "./AudioWave";
 
 const Track = ({ track }) => {
   const addToCartHandler = () => {};
@@ -15,11 +16,15 @@ const Track = ({ track }) => {
       <TableCell>
         <Typography variant="subtitle1">{track.name}</Typography>
         <Typography variant="subtitle2" color="primary.light">
-          {track.artist.name}
+          {track.artists
+            .map(
+              (artist) =>
+                `${artist.data.attributes.first_name} ${artist.data.attributes.last_name}`
+            )
+            .join(", ")}
         </Typography>
       </TableCell>
-      <TableCell>{"audio form"}</TableCell>
-      <TableCell>{track.duration}</TableCell>
+      <AudioWave url={track.file} id={track.id} />
       <TableCell>
         <FlexBox>
           <IconButton

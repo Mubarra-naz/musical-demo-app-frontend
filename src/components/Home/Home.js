@@ -1,5 +1,7 @@
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTracks } from "../../store/actions/trackActions";
 import FlexBox from "../ui/FlexBox";
 import FilterBar from "./FilterBar/FilterBar";
 import SearchBox from "./SearchBox";
@@ -44,19 +46,15 @@ const categories = [
     ],
   },
 ];
-const trackCount = 34;
 
-const trackList = [
-  {
-    id: 1,
-    name: "I'll be waiting",
-    duration: "03:09",
-    artist: {
-      name: "Cian",
-    },
-  },
-];
 const Home = () => {
+  const dispatch = useDispatch();
+  const tracks = useSelector((state) => state.track.tracks);
+
+  useEffect(() => {
+    dispatch(fetchTracks());
+  }, [tracks.length]);
+
   return (
     <>
       <SearchBox />
@@ -69,7 +67,7 @@ const Home = () => {
         }}
       >
         <div>
-          <Typography variant="h5">Tracks ({trackCount})</Typography>
+          <Typography variant="h5">Tracks ({tracks.length})</Typography>
         </div>
         <div>
           <FlexBox
@@ -83,7 +81,7 @@ const Home = () => {
           </FlexBox>
         </div>
       </FlexBox>
-      <TracksList items={trackList} />
+      <TracksList items={tracks} />
     </>
   );
 };
