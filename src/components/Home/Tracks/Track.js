@@ -5,12 +5,35 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import React from "react";
 import FlexBox from "../../ui/FlexBox";
 import AudioWave from "./AudioWave";
+import { useDispatch } from "react-redux";
+import { downloadAudio } from "../../../store/actions/trackActions";
+import { showNotification } from "../../../store/uiSlice";
 
 const Track = ({ track }) => {
+  const dispatch = useDispatch();
   const addToCartHandler = () => {};
   const addToFavoriteHandler = () => {};
 
-  const downloadHandler = () => {};
+  const downloadHandler = () => {
+    downloadAudio(track.id)
+      .then((data) => {
+        const link = document.createElement("a");
+        link.href = data.url;
+        link.setAttribute("download", "audio.opus");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      })
+      .catch((error) => {
+        dispatch(
+          showNotification({
+            status: "error",
+            title: "Error",
+            message: error.message,
+          })
+        );
+      });
+  };
   return (
     <>
       <TableCell>

@@ -2,7 +2,6 @@ import Wavesurfer from "wavesurfer.js";
 import { useRef, useEffect, useState } from "react";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import { IconButton, TableCell } from "@mui/material";
-import { useDispatch } from "react-redux";
 // import { fetchAudio } from "../../../store/actions/trackActions";
 
 const secTommss = (seconds) => {
@@ -10,7 +9,6 @@ const secTommss = (seconds) => {
 };
 
 const AudioWave = ({ url, id }) => {
-  const dispatch = useDispatch();
   const containerRef = useRef(null);
   const [wavesurfer, setWavesurfer] = useState(null);
   const [duration, setDuration] = useState("00:00");
