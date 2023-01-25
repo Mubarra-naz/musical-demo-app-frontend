@@ -1,11 +1,8 @@
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import React, { Fragment, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { authActions } from "../store/authSlice";
+import { useSelector } from "react-redux";
 import Notification from "./Notification";
 import Header from "./Header";
-import { gapi } from "gapi-script";
-import AppSetting from "../config";
 
 let isInitial = true;
 

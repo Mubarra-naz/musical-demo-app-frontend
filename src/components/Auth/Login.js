@@ -27,7 +27,7 @@ const Login = () => {
     if (isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   const loginFormik = useFormik({
     initialValues: {
