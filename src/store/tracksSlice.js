@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchTracks } from "./actions/trackActions";
-import { showNotification } from "./uiSlice";
+import {
+  fetchTracks,
+  markFavourite,
+  removeFavourite,
+} from "./actions/trackActions";
 
 const tracksSlice = createSlice({
   name: "track",
@@ -15,6 +18,18 @@ const tracksSlice = createSlice({
       })
       .addCase(fetchTracks.rejected, (state, action) => {
         state.tracks = [];
+      })
+      .addCase(markFavourite.fulfilled, (state, action) => {
+        const track = state.tracks.find(
+          (item) => item.id == action.payload.track_id
+        );
+        track.attributes.is_favourite = true;
+      })
+      .addCase(removeFavourite.fulfilled, (state, action) => {
+        const track = state.tracks.find(
+          (item) => item.id == action.payload.track_id
+        );
+        track.attributes.is_favourite = false;
       });
   },
 });

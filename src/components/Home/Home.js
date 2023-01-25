@@ -8,57 +8,19 @@ import SearchBox from "./SearchBox";
 import SortBox from "./SortBox";
 import TracksList from "./Tracks/TracksList";
 
-const categories = [
-  {
-    id: 1,
-    name: "Vocals",
-    sub_categories: [
-      {
-        id: 1,
-        name: "A capella",
-      },
-      { id: 2, name: "Choral" },
-      { id: 3, name: "Background" },
-    ],
-  },
-  {
-    id: 2,
-    name: "genres",
-    sub_categories: [
-      {
-        id: 1,
-        name: "A capella",
-      },
-      { id: 2, name: "Choral" },
-      { id: 3, name: "Background" },
-    ],
-  },
-  {
-    id: 3,
-    name: "types",
-    sub_categories: [
-      {
-        id: 1,
-        name: "A capella",
-      },
-      { id: 2, name: "Choral" },
-      { id: 3, name: "Background" },
-    ],
-  },
-];
-
 const Home = () => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const tracks = useSelector((state) => state.track.tracks);
 
   useEffect(() => {
     dispatch(fetchTracks());
-  }, [tracks.length]);
+  }, [tracks.length, isLoggedIn]);
 
   return (
     <>
       <SearchBox />
-      <FilterBar categories={categories} />
+      {/* <FilterBar categories={categories} /> */}
       <FlexBox
         styles={{
           justifyContent: "space-between",

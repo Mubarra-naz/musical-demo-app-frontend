@@ -1,39 +1,88 @@
-import { IconButton, TableCell, TableRow, Typography } from "@mui/material";
+import { IconButton, TableCell, Typography } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import React from "react";
 import FlexBox from "../../ui/FlexBox";
 import AudioWave from "./AudioWave";
-import { useDispatch } from "react-redux";
-import { downloadAudio } from "../../../store/actions/trackActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  downloadAudio,
+  markFavourite,
+  removeFavourite,
+} from "../../../store/actions/trackActions";
 import { showNotification } from "../../../store/uiSlice";
+import { handleAsyncAction } from "../../../store";
 
 const Track = ({ track }) => {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const addToCartHandler = () => {};
-  const addToFavoriteHandler = () => {};
+
+  const showLoginError = () => {
+    dispatch(
+      showNotification({
+        status: "error",
+        title: "Error",
+        message: "You need to Login before continuing",
+      })
+    );
+  };
+
+  const successCallback = (data) => {
+    dispatch(
+      showNotification({
+        status: "success",
+        title: "Success",
+        message: data.payload.message,
+      })
+    );
+  };
+  const failureCallback = (error) => {
+    dispatch(
+      showNotification({
+        status: "error",
+        title: "Error",
+        message: error.message,
+      })
+    );
+  };
+  const favoriteHandler = () => {
+    if (!isLoggedIn) {
+      showLoginError();
+    } else {
+      const action = track.is_favourite
+        ? removeFavourite(track.id)
+        : markFavourite(track.id);
+      handleAsyncAction(dispatch, action, successCallback, failureCallback);
+    }
+  };
 
   const downloadHandler = () => {
-    downloadAudio(track.id)
-      .then((data) => {
-        const link = document.createElement("a");
-        link.href = data.url;
-        link.setAttribute("download", "audio.opus");
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      })
-      .catch((error) => {
-        dispatch(
-          showNotification({
-            status: "error",
-            title: "Error",
-            message: error.message,
-          })
-        );
-      });
+    if (!isLoggedIn) {
+      showLoginError();
+    } else {
+      downloadAudio(track.id)
+        .then((data) => {
+          const link = document.createElement("a");
+          link.href = data.url;
+          link.setAttribute("download", "audio.opus");
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+        .catch((error) => {
+          dispatch(
+            showNotification({
+              status: "error",
+              title: "Error",
+              message: error.message,
+            })
+          );
+        });
+    }
   };
+
   return (
     <>
       <TableCell>
@@ -54,9 +103,13 @@ const Track = ({ track }) => {
             type="button"
             sx={{ p: "10px" }}
             aria-label="fav-icon"
-            onClick={addToFavoriteHandler}
+            onClick={favoriteHandler}
           >
-            <FavoriteBorderIcon />
+            {track.is_favourite ? (
+              <FavoriteIcon color="primary" />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
           </IconButton>
           <IconButton
             type="button"

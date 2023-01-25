@@ -14,4 +14,15 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
 });
 
+export const handleAsyncAction = (
+  dispatch,
+  action,
+  successCallback,
+  errorCallback
+) => {
+  dispatch(action)
+    .then((response) => successCallback(response))
+    .catch((error) => errorCallback(error));
+};
+
 export default store;
