@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import { Link, Button, IconButton, Menu, MenuItem } from "@mui/material/";
+import { Link, IconButton, Menu, MenuItem } from "@mui/material/";
 import AppBar from "../components/ui/AppBar";
 import Toolbar from "../components/ui/Toolbar";
 import { useDispatch, useSelector } from "react-redux";

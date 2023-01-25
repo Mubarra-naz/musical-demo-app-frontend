@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu } from "@mui/material";
 import React, { useState } from "react";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 import FilterMenuItem from "./FilterMenuItem";

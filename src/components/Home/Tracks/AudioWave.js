@@ -18,7 +18,6 @@ const AudioWave = ({ url, id }) => {
       const ws = Wavesurfer.create({
         waveColor: "#eeeeee",
         progressColor: "#42a5f5",
-        height: "90%",
         barWidth: 3,
         barRadius: 3,
         barGap: 2,

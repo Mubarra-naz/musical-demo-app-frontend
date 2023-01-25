@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTracks } from "../../store/actions/trackActions";
 import FlexBox from "../ui/FlexBox";
-import FilterBar from "./FilterBar/FilterBar";
+// import FilterBar from "./FilterBar/FilterBar";
 import SearchBox from "./SearchBox";
 import SortBox from "./SortBox";
 import TracksList from "./Tracks/TracksList";

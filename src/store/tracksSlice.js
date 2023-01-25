@@ -21,13 +21,13 @@ const tracksSlice = createSlice({
       })
       .addCase(markFavourite.fulfilled, (state, action) => {
         const track = state.tracks.find(
-          (item) => item.id == action.payload.track_id
+          (item) => item.attributes.id === action.payload.track_id
         );
         track.attributes.is_favourite = true;
       })
       .addCase(removeFavourite.fulfilled, (state, action) => {
         const track = state.tracks.find(
-          (item) => item.id == action.payload.track_id
+          (item) => item.id === action.payload.track_id
         );
         track.attributes.is_favourite = false;
       });

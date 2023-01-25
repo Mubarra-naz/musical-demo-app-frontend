@@ -16,9 +16,9 @@ const options = [
 ];
 
 const SortBox = () => {
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
