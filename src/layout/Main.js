@@ -4,13 +4,16 @@ import { useSelector } from "react-redux";
 import Notification from "./Notification";
 import Header from "./Header";
 
+let isInitial = true;
+
 const Main = (props) => {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    // if (notification.message) {
-    //   return;
-    // }
+    if (isInitial) {
+      isInitial = false;
+      return;
+    }
   }, [notification]);
   return (
     <Fragment>

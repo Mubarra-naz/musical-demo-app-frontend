@@ -1,4 +1,3 @@
-import React from "react";
 import MuiToolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 

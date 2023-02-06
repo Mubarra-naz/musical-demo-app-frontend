@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         {!isAuth && <Route path="/login" element={<Login />} />}
         {!isAuth && <Route path="/signup" element={<Signup />} />}
-        <Route path="*" element={<Navigate to="/" replace />}></Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Main>
   );

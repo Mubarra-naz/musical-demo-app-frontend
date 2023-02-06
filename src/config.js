@@ -9,6 +9,8 @@ const config = {
   production: {},
 };
 
-export default {
+const AppSetting = {
   ...config[process.env.REACT_APP_STAGE || "development"],
 };
+
+export default AppSetting;
