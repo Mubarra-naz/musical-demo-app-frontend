@@ -53,15 +53,6 @@ const Header = () => {
           >
             {"Musical App".toUpperCase()}
           </Link>
-          <Link
-            color="inherit"
-            variant="h6"
-            underline="none"
-            href="/"
-            sx={leftLink}
-          >
-            {"Pricing"}
-          </Link>
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             {!isAuth && (
               <Link
@@ -73,8 +64,27 @@ const Header = () => {
                 {"Sign In"}
               </Link>
             )}
+            {!isAuth && (
+              <Link
+                variant="h6"
+                underline="none"
+                href="/signup/"
+                sx={{ ...rightLink }}
+              >
+                {"Sign Up"}
+              </Link>
+            )}
             {isAuth && (
               <div>
+                <Link
+                  color="inherit"
+                  variant="h6"
+                  underline="none"
+                  href="/"
+                  sx={{ ...rightLink }}
+                >
+                  {"Cart"}
+                </Link>
                 <IconButton
                   size="large"
                   aria-label="account of current user"
