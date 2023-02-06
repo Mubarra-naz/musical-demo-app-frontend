@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AppSetting from "../../config";
 import { gapi } from "gapi-script";
@@ -9,8 +9,6 @@ import FlexBox from "../ui/FlexBox";
 import { login } from "../../store/actions/authActions";
 
 const GoogleLogin = () => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
   useEffect(() => {
     gapi.load("client:auth2", async () => {
       await gapi.client.init({
@@ -21,7 +19,7 @@ const GoogleLogin = () => {
       const auth2 = gapi.auth2.getAuthInstance();
       auth2.isSignedIn.listen(onSignIn);
     });
-  }, []);
+  });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
